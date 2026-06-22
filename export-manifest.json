@@ -1,8 +1,35 @@
 {
   "site": "https://qlflqwhd.co.kr",
-  "generatedAt": "2026-06-22T01:57:37.983Z",
+  "generatedAt": "2026-06-22T02:26:15.195Z",
   "layoutSource": "govfeednews.com GeneratePress-like static layout",
-  "candidateSource": "analytics-target-rebuild-candidates-90d-enriched.json",
-  "posts": 30,
+  "contentPolicy": "Rewritten from Tistory topics with 2026 official-source review",
+  "slugPolicy": "English lowercase hyphen slugs only",
+  "articles": [
+    {
+      "title": "국민내일배움카드 사용처 2026년 기준 정리",
+      "slug": "national-tomorrow-learning-card-usage-2026",
+      "sourceArticle": "Tistory #55 국민내일배움카드 사용처 2025"
+    },
+    {
+      "title": "교육급여 바우처 사용처 2026년 신청부터 사용까지",
+      "slug": "education-benefit-voucher-usage-2026",
+      "sourceArticle": "Tistory #56 교육급여 바우처 사용처 2025"
+    },
+    {
+      "title": "에너지바우처 신청방법 2026년 기간과 준비서류",
+      "slug": "energy-voucher-application-2026",
+      "sourceArticle": "Tistory #112 2025 에너지바우처 신청방법"
+    },
+    {
+      "title": "실업급여 수급기간 조건 2026년 신청 절차 정리",
+      "slug": "unemployment-benefit-period-conditions-2026",
+      "sourceArticle": "Tistory #212 고용보험 실업급여 수급기간 조건 총정리"
+    },
+    {
+      "title": "국민연금 예상수령액 조회 2026년 확인 방법",
+      "slug": "national-pension-estimate-check-2026",
+      "sourceArticle": "Tistory #132 국민연금 예상수령액 조회"
+    }
+  ],
   "noindexDraftPosts": true
 }
