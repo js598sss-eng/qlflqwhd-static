@@ -186,6 +186,19 @@ body {
   margin-top: 0;
 }
 
+.ad-block {
+  display: block;
+  clear: both;
+  margin: 8px auto 18px;
+  text-align: center;
+}
+
+.ad-middle,
+.ad-bottom {
+  margin-top: 26px;
+  margin-bottom: 26px;
+}
+
 .cta-box {
   background: transparent;
   border: 0;
