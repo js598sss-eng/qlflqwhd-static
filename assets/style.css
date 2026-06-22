@@ -80,6 +80,19 @@ body {
   padding: 28px 20px;
 }
 
+.single-post-page .site-header,
+.single-post-page .main-navigation {
+  display: none;
+}
+
+.single-post-page .site-main {
+  padding-top: 12px;
+}
+
+.single-post-page .inside-article {
+  padding-top: 24px;
+}
+
 .post,
 .intro {
   margin: 0 0 24px;
