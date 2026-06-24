@@ -1,10 +1,43 @@
 {
   "site": "https://qlflqwhd.co.kr",
-  "generatedAt": "2026-06-24T20:10:00+09:00",
+  "generatedAt": "2026-06-24T21:05:00+09:00",
   "layoutSource": "GeneratePress-like static layout with rebuilt CTA button blocks",
   "contentPolicy": "Rewritten from old traffic topics with current official-source review",
   "slugPolicy": "English lowercase hyphen slugs only",
   "articles": [
+    {
+      "title": "2027 아시안컵 한국 경기 일정 중계 확인 방법",
+      "slug": "asian-cup-korea-match-schedule-broadcast-guide-2027",
+      "sourceArticle": "https://dhgn01.jinsun0112.com/104",
+      "sourceCampaigns": [
+        "일본대한국 아시안컵",
+        "U23 아시안컵#워프dhgn01"
+      ],
+      "category": "스포츠",
+      "generatedAt": "2026-06-24T21:05:00+09:00"
+    },
+    {
+      "title": "쿠팡플레이 스포츠패스 중계 바로가기 확인 방법 2026",
+      "slug": "coupang-play-sports-pass-watch-guide-2026",
+      "sourceArticle": "https://zzhixiuskin.com/187",
+      "sourceCampaigns": [
+        "쿠플바로가기",
+        "프리미어리그손흥민황희찬"
+      ],
+      "category": "스포츠",
+      "generatedAt": "2026-06-24T21:05:00+09:00"
+    },
+    {
+      "title": "2026 월드컵 한국 경기 일정 중계 확인 방법",
+      "slug": "world-cup-korea-match-schedule-broadcast-guide-2026",
+      "sourceArticle": "https://dhgn01.jinsun0112.com/124",
+      "sourceCampaigns": [
+        "월드컵 아시아 예선전",
+        "월드컵 아시아 예선전 #2"
+      ],
+      "category": "스포츠",
+      "generatedAt": "2026-06-24T21:05:00+09:00"
+    },
     {
       "title": "상생페이백 종료 환급 사용처 확인 방법 2026 기준",
       "slug": "sangsaeng-payback-card-refund-check-guide-2026",
