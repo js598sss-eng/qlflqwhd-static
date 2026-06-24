@@ -1,10 +1,23 @@
 {
   "site": "https://qlflqwhd.co.kr",
-  "generatedAt": "2026-06-24T19:45:00+09:00",
+  "generatedAt": "2026-06-24T20:10:00+09:00",
   "layoutSource": "GeneratePress-like static layout with rebuilt CTA button blocks",
   "contentPolicy": "Rewritten from old traffic topics with current official-source review",
   "slugPolicy": "English lowercase hyphen slugs only",
   "articles": [
+    {
+      "title": "상생페이백 종료 환급 사용처 확인 방법 2026 기준",
+      "slug": "sangsaeng-payback-card-refund-check-guide-2026",
+      "sourceArticle": "https://tbal5.zzhixiuskin.com/저장소/1149",
+      "category": "생활지원",
+      "generatedAt": "2026-06-24T20:10:00+09:00",
+      "sourceCampaign": "상생#워프tbal",
+      "sourceTopUrl": "https://tbal5.zzhixiuskin.com/저장소/1149",
+      "officialSources": [
+        "https://www.mss.go.kr/site/smba/ex/bbs/View.do?bcIdx=1061050&cbIdx=86&parentSeq=1061050",
+        "https://www.mss.go.kr/site/smba/ex/bbs/View.do?bcIdx=1064912&cbIdx=86"
+      ]
+    },
     {
       "title": "노인일자리 신청 방법 노인일자리여기 참여자격 확인 2026",
       "slug": "senior-job-application-seniorro-guide-2026",
