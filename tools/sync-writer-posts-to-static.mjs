@@ -4,7 +4,9 @@ import path from "node:path";
 
 const siteDir = process.cwd();
 const writerOrigin = "https://wp.qlflqwhd.co.kr";
+const bWriterOrigin = "https://wp-a1.qlflqwhd.co.kr";
 const publicOrigin = "https://qlflqwhd.co.kr";
+const bPublicOrigin = "https://a1.qlflqwhd.co.kr";
 const adsenseClient = "ca-pub-6459241739499317";
 const gaId = "G-DXZ7HY9DF7";
 
@@ -38,10 +40,54 @@ function safeSlug(slug, id) {
   return String(slug || `writer-post-${id}`).replace(/^\/+|\/+$/g, "");
 }
 
-function pageHtml(post) {
+function normalizedTokens(value) {
+  const cleaned = decodeEntities(value)
+    .replace(/핵심|정보|간편|안내|요약|CTA|완벽|가이드|신청|방법|총정리|추천|BEST|best|\d+/gi, " ")
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .toLowerCase();
+  return new Set(cleaned.split(/\s+/).filter((token) => token.length >= 2));
+}
+
+function matchBPost(aPost, bPosts) {
+  if (!bPosts.length) return null;
+  const aTokens = normalizedTokens(`${aPost.title?.rendered || aPost.title?.raw || ""} ${aPost.slug || ""}`);
+  let best = null;
+  let bestScore = -1;
+
+  for (const bPost of bPosts) {
+    const bTokens = normalizedTokens(`${bPost.title?.rendered || bPost.title?.raw || ""} ${bPost.slug || ""}`);
+    let score = 0;
+    for (const token of aTokens) if (bTokens.has(token)) score += 1;
+    const timeGap = Math.abs(new Date(aPost.date || 0) - new Date(bPost.date || 0)) / 60000;
+    const adjusted = score - Math.min(timeGap / 120, 2);
+    if (adjusted > bestScore) {
+      best = bPost;
+      bestScore = adjusted;
+    }
+  }
+
+  return best || bPosts[0];
+}
+
+function ctaButtons(targetUrl, title) {
+  if (!targetUrl) return "";
+  const keyword = decodeEntities(title).replace(/\s*(핵심 정보|간편 안내|요약|완벽 가이드)\s*/g, "").trim();
+  const labels = [
+    "지금 신청하기 ❯❯",
+    `${keyword || "자세히"} 바로 확인 ❯❯`,
+    "내 조건 확인 ❯❯",
+  ];
+  const buttonStyle = "display:block;width:100%;padding:10px 0;margin:0 0 4px 0;background-color:#1f1bc4;color:#ffffff;text-align:center;text-decoration:none;font-family:Verdana,Arial,sans-serif;font-size:18px;font-weight:bold;border-radius:12px;box-sizing:border-box;white-space:nowrap;cursor:pointer";
+  return `<div class="a-to-b-cta" style="margin:10px 0">
+${labels.map((label) => `<a href="${esc(targetUrl)}" style="${buttonStyle}" rel="noopener">${esc(label)}</a>`).join("")}
+</div>`;
+}
+
+function pageHtml(post, bPost) {
   const title = decodeEntities(post.title?.rendered || post.title?.raw || `Post ${post.id}`);
   const slug = safeSlug(post.slug, post.id);
   const canonical = `${publicOrigin}/${encodeURI(slug)}/`;
+  const bUrl = bPost ? `${bPublicOrigin}/${encodeURI(safeSlug(bPost.slug, bPost.id))}/` : "";
   const rawContent = post.content?.raw || post.content?.rendered || "";
   const description = stripTags(post.excerpt?.raw || post.excerpt?.rendered || rawContent).slice(0, 155);
   const date = String(post.date || "").slice(0, 10);
@@ -73,6 +119,7 @@ function pageHtml(post) {
           <h1 class="entry-title">${esc(title)}</h1>
         </header>
         <div class="entry-content">
+${ctaButtons(bUrl, title)}
           <div class="ad-block ad-top">
             <ins class="adsbygoogle"
                  style="display:block"
@@ -82,6 +129,7 @@ function pageHtml(post) {
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
 ${rawContent}
+${ctaButtons(bUrl, title)}
           <div class="ad-block ad-bottom">
             <ins class="adsbygoogle"
                  style="display:block"
@@ -99,8 +147,8 @@ ${rawContent}
 `;
 }
 
-async function fetchPublishedPosts() {
-  const url = `${writerOrigin}/wp-json/wp/v2/posts/?status=publish&per_page=100`;
+async function fetchPublishedPosts(origin) {
+  const url = `${origin}/wp-json/wp/v2/posts/?status=publish&per_page=100`;
   const res = await fetch(url, { headers: { accept: "application/json" } });
   if (!res.ok) throw new Error(`${res.status} ${url}`);
   const posts = await res.json();
@@ -108,16 +156,17 @@ async function fetchPublishedPosts() {
   return posts;
 }
 
-async function writePost(post) {
+async function writePost(post, bPost) {
   const slug = safeSlug(post.slug, post.id);
   const outputDir = path.join(siteDir, slug);
   await mkdir(outputDir, { recursive: true });
-  await writeFile(path.join(outputDir, "index.html"), pageHtml(post), "utf8");
+  await writeFile(path.join(outputDir, "index.html"), pageHtml(post, bPost), "utf8");
   return {
     id: post.id,
     title: decodeEntities(post.title?.rendered || post.title?.raw || ""),
     slug,
     url: `${publicOrigin}/${encodeURI(slug)}/`,
+    bUrl: bPost ? `${bPublicOrigin}/${encodeURI(safeSlug(bPost.slug, bPost.id))}/` : null,
     modified: post.modified_gmt || post.modified || post.date_gmt || post.date || new Date().toISOString(),
   };
 }
@@ -140,9 +189,12 @@ async function updateSitemap(entries) {
 }
 
 async function main() {
-  const posts = await fetchPublishedPosts();
+  const [posts, bPosts] = await Promise.all([
+    fetchPublishedPosts(writerOrigin),
+    fetchPublishedPosts(bWriterOrigin).catch(() => []),
+  ]);
   const entries = [];
-  for (const post of posts) entries.push(await writePost(post));
+  for (const post of posts) entries.push(await writePost(post, matchBPost(post, bPosts)));
   await updateSitemap(entries);
   console.log(JSON.stringify({ synced: entries.length, entries }, null, 2));
 }
