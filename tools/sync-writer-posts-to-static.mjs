@@ -66,7 +66,7 @@ function matchBPost(aPost, bPosts) {
     }
   }
 
-  return best || bPosts[0];
+  return bestScore >= 1 ? best : null;
 }
 
 function ctaButtons(targetUrl, title) {
@@ -83,12 +83,26 @@ ${labels.map((label) => `<a href="${esc(targetUrl)}" style="${buttonStyle}" rel=
 </div>`;
 }
 
+function rewriteAContent(rawContent, bUrl) {
+  let content = String(rawContent || "");
+  if (bUrl) {
+    content = content.replace(/https:\/\/wp-a1\.qlflqwhd\.co\.kr\/[^"'\s<)]+\/?/g, bUrl);
+  }
+  return content;
+}
+
+function hasExistingCta(rawContent) {
+  return /background-color:\s*#1f1bc4/i.test(rawContent) || /wp-a1\.qlflqwhd\.co\.kr/i.test(rawContent);
+}
+
 function pageHtml(post, bPost) {
   const title = decodeEntities(post.title?.rendered || post.title?.raw || `Post ${post.id}`);
   const slug = safeSlug(post.slug, post.id);
   const canonical = `${publicOrigin}/${encodeURI(slug)}/`;
   const bUrl = bPost ? `${bPublicOrigin}/${encodeURI(safeSlug(bPost.slug, bPost.id))}/` : "";
-  const rawContent = post.content?.raw || post.content?.rendered || "";
+  const originalContent = post.content?.raw || post.content?.rendered || "";
+  const rawContent = rewriteAContent(originalContent, bUrl);
+  const autoCta = !hasExistingCta(originalContent) ? ctaButtons(bUrl, title) : "";
   const description = stripTags(post.excerpt?.raw || post.excerpt?.rendered || rawContent).slice(0, 155);
   const date = String(post.date || "").slice(0, 10);
 
@@ -119,7 +133,7 @@ function pageHtml(post, bPost) {
           <h1 class="entry-title">${esc(title)}</h1>
         </header>
         <div class="entry-content">
-${ctaButtons(bUrl, title)}
+${autoCta}
           <div class="ad-block ad-top">
             <ins class="adsbygoogle"
                  style="display:block"
@@ -129,7 +143,7 @@ ${ctaButtons(bUrl, title)}
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
 ${rawContent}
-${ctaButtons(bUrl, title)}
+${autoCta}
           <div class="ad-block ad-bottom">
             <ins class="adsbygoogle"
                  style="display:block"
