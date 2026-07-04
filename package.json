@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "node tools/sync-writer-posts-to-static.mjs"
+  }
+}
