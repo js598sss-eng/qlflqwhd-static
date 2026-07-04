@@ -7,6 +7,7 @@ const writerOrigin = "https://wp.qlflqwhd.co.kr";
 const bWriterOrigin = "https://wp-a1.qlflqwhd.co.kr";
 const publicOrigin = "https://qlflqwhd.co.kr";
 const bPublicOrigin = "https://a1.qlflqwhd.co.kr";
+const siteName = "qlflqwhd.co.kr";
 const adsenseClient = "ca-pub-6459241739499317";
 const gaId = "G-DXZ7HY9DF7";
 
@@ -95,6 +96,29 @@ function hasExistingCta(rawContent) {
   return /background-color:\s*#1f1bc4/i.test(rawContent) || /wp-a1\.qlflqwhd\.co\.kr/i.test(rawContent);
 }
 
+function siteHeader() {
+  return `<header id="masthead" class="site-header">
+    <div class="inside-header grid-container">
+      <p class="main-title"><a href="/">${esc(siteName)}</a></p>
+      <p class="site-description">생활 정보와 신청 안내</p>
+    </div>
+  </header>
+  <nav class="main-navigation">
+    <div class="inside-navigation grid-container">
+      <a href="/">홈</a>
+      <a href="/sitemap.xml">전체 글</a>
+    </div>
+  </nav>`;
+}
+
+function siteFooter() {
+  return `<footer class="site-footer">
+    <div class="site-info grid-container">
+      <div class="copyright-bar">Copyright © ${new Date().getFullYear()} ${esc(siteName)}. All rights reserved.</div>
+    </div>
+  </footer>`;
+}
+
 function pageHtml(post, bPost) {
   const title = decodeEntities(post.title?.rendered || post.title?.raw || `Post ${post.id}`);
   const slug = safeSlug(post.slug, post.id);
@@ -104,14 +128,13 @@ function pageHtml(post, bPost) {
   const rawContent = rewriteAContent(originalContent, bUrl);
   const autoCta = !hasExistingCta(originalContent) ? ctaButtons(bUrl, title) : "";
   const description = stripTags(post.excerpt?.raw || post.excerpt?.rendered || rawContent).slice(0, 155);
-  const date = String(post.date || "").slice(0, 10);
 
   return `<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${esc(title)} - 동동스토리</title>
+  <title>${esc(title)} - ${esc(siteName)}</title>
   <meta name="description" content="${esc(description)}">
   <link rel="canonical" href="${esc(canonical)}">
   <link rel="stylesheet" href="/assets/style.css">
@@ -124,12 +147,12 @@ function pageHtml(post, bPost) {
     gtag('config', '${gaId}');
   </script>
 </head>
-<body class="home blog gp-static no-sidebar separate-containers header-aligned-left single-post-page">
+<body class="post-template-default single single-post gp-static no-sidebar separate-containers header-aligned-left">
+${siteHeader()}
   <main id="content" class="site-main grid-container">
     <article class="post single-post">
       <div class="inside-article">
         <header class="entry-header">
-          <p class="post-meta">자동화 발행 글 | ${esc(date)}</p>
           <h1 class="entry-title">${esc(title)}</h1>
         </header>
         <div class="entry-content">
@@ -156,6 +179,7 @@ ${autoCta}
       </div>
     </article>
   </main>
+${siteFooter()}
 </body>
 </html>
 `;
