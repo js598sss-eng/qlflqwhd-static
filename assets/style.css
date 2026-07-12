@@ -77,6 +77,11 @@ body {
   font-size: 15px;
 }
 
+body.single-post-page .site-header,
+body.single-post-page .main-navigation {
+  display: none;
+}
+
 .site-main {
   padding: 28px 20px;
 }
