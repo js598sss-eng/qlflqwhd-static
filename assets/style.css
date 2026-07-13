@@ -129,7 +129,7 @@ th {
 }
 
 .site-main {
-  margin: 20px 0;
+  margin: 20px auto;
 }
 
 .separate-containers .inside-article,
@@ -311,7 +311,7 @@ input[type="submit"] {
   }
 
   .site-main {
-    margin: 20px 0;
+    margin: 20px auto;
   }
 
   .separate-containers .inside-article,
