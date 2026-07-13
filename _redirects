@@ -1,1 +1,6 @@
+/tools/* /404.html 404
+/package.json /404.html 404
+/added-posts.json /404.html 404
+/writer-posts.json /404.html 404
+/export-manifest.json /404.html 404
 https://www.qlflqwhd.co.kr/* https://qlflqwhd.co.kr/:splat 301
